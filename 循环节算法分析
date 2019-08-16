@@ -1,0 +1,84 @@
+求无限小数的循环节.
+
+用 11/13=0.846153846153846153846153........为例来讲解.
+
+我们可知想要求一个小数,按照数学的方法,通过竖式除法,一步一步地求出每一位小数下的商和余数,然后再通过余数补零,用余数补零与除
+数相除得到新的商和余数,循环往复,得到无限小数的每一个除法步骤的商和余数,我们通过把商和小数存起来,寻找小数的规律即可得到循环
+节.
+
+算法过程:
+          我们将11/13计算并取余,计算每一步的商和余数,将新得到的商,与小数部分的第一位进行比较(在11/13中我们得到第一位小数是8)
+          如果相等,即可进行下一个判断,如果之后的每一个小数都与之前存储的小数相等,再次直到遇到与第一次相等的小数,即可判断在这
+          之间的小数部分为改无限小数的循环节.
+          
+          在此过程中,假如设该循环节为"846853",我们就需要改进上述思想,新增一步判断,即,如果遇到第一次相等的小数,再次求出下一位小
+          数,判断是否相等,如果相等为循环节;如果不等,继续计算小数部分,直到再次遇到与第一位相等的小数(此时是第二次遇到),循环往复,
+          即可得到该无限小数的循环节.
+  
+该算法的不足:
+          如果得到的该小数不是无限小数,即该算法将会无限循环下去.
+          
+          
+          
+具体代码:
+
+private int num1;//被除数
+        private int num2;//除数
+        private int bin;//商
+        private int rem;//余数
+        private ArrayList<Integer> arr;
+        private String cycleNum="";
+        private int cycleLongth;
+        public Test(int num1,int num2){
+            this.num1=num1;
+            this.num2=num2;
+            arr=new ArrayList<Integer>();
+            this.cycleLongth=this.xxx();
+            for(int i=0;i< this.cycleLongth;i++){
+                this.cycleNum+=arr.get(i);
+            }
+        }
+        //计算小数
+        private void cal(){
+            this.bin=this.rem/this.num2;
+            this.rem=this.rem%this.num2;
+            this.rem*=10;
+            arr.add(bin);
+        }
+
+        private int xxx(){
+            //整数部分计算
+            this.bin=this.num1/this.num2;
+            this.rem=this.num1%this.num2;
+            this.rem*=10;
+            while (true){
+                //小数部分计算
+                this.cal();
+                int i=0;
+                int j=arr.size()-1;
+                int longth=arr.size();
+                if(arr.get(0)==arr.get(arr.size()-1)&&arr.size()-1!=0){
+
+                    while (arr.get(i)==arr.get(j)&&i<longth){
+                        this.cal();
+                        i++;
+                        j++;
+                        if(i==longth){
+                            return longth-1;
+                        }
+                    }
+                }
+            }
+        }
+
+        public String toString(){
+            return "循环节是:"+this.cycleNum+"\n"
+                    +"循环节长度是:"+this.cycleLongth;
+        }
+
+        public static void main(String[] args) {
+            Test test=new Test(11,13);
+            System.out.println(test.toString());
+        }
+}
+          
